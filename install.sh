@@ -78,9 +78,9 @@ fi
 
 echo -e "\n====== Uploading necessary files ======\n"
 cp openvpn_config_files/server-template.conf openvpn_config_files/server.conf
-gsed -i "s/{proto}/$proto/" openvpn_config_files/server.conf
-gsed -i "s/{port}/$port/" openvpn_config_files/server.conf
-gsed -i "s/{een}/$proto_index/" openvpn_config_files/server.conf
+sed -i "s/{proto}/$proto/" openvpn_config_files/server.conf
+sed -i "s/{port}/$port/" openvpn_config_files/server.conf
+sed -i "s/{een}/$proto_index/" openvpn_config_files/server.conf
 scp -rp -o "StrictHostKeyChecking no" -i vpn openvpn_config_files/ "$username@$ip:~/"
 rm openvpn_config_files/server.conf
 echo -e "done\n"
@@ -99,7 +99,7 @@ ssh -i vpn "$username@$ip" << END
 	
 	echo "====== Configuring system ======"
 	cd ~/
-	gsed -i "s/{interface}/$interface/" openvpn_config_files/before.rules
+	sed -i "s/{interface}/$interface/" openvpn_config_files/before.rules
 	yes | sudo cp -rf openvpn_config_files/before.rules /etc/ufw/before.rules
 	yes | sudo cp -rf openvpn_config_files/ufw /etc/default/ufw
 	yes | sudo cp -rf openvpn_config_files/sysctl.conf /etc/sysctl.conf
@@ -135,8 +135,8 @@ while [[ ${#filename} -eq 0 ]]; do
 done
 	
 cp openvpn_config_files/template.ovpn "ovpn_files/$filename.ovpn"
-gsed -i "s/{ip}/$ip/" "ovpn_files/$filename.ovpn"
-gsed -i "s/{proto}/$proto/" "ovpn_files/$filename.ovpn"
-gsed -i "s/{port}/$port/" "ovpn_files/$filename.ovpn"
+sed -i "s/{ip}/$ip/" "ovpn_files/$filename.ovpn"
+sed -i "s/{proto}/$proto/" "ovpn_files/$filename.ovpn"
+sed -i "s/{port}/$port/" "ovpn_files/$filename.ovpn"
 echo "Config file created successfully. You can find it in the ovpn_files folder. Copy or add it to your host."
 read -n 1 -s -r -p "Press any key to exit"
